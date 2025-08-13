@@ -29,7 +29,7 @@ const MessageInput = () => {
   };
 
   const handleSendMessage = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // prevent from reloading the page
     if (!text.trim() && !imagePreview) return;
 
     try {
