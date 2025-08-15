@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
-
+import logo from "../../public/logo.png"; // Assuming you have a logo image
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
 
@@ -17,8 +17,32 @@ const Navbar = () => {
               to="/"
               className="flex items-center gap-2.5 hover:opacity-80 transition-all"
             >
-              <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-primary" />
+              <div className="size-9 rounded-lg text-primary flex items-center justify-center">
+                {/* <MessageSquare className="w-5 h-5 text-primary" /> */}
+                {/* <img
+                  src={logo}
+                  alt="logo"
+                  className="w-10 aspect-square   text-primary"
+                /> */}
+                <svg
+                  clsdassName="text-primary"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 757 743"
+                  width="757"
+                  height="743"
+                  fill="currentColor"
+                >
+                  <circle
+                    cx="366.413"
+                    cy="342.139"
+                    r="250.731"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="111.458"
+                    stroke-linecap="round"
+                  />
+                  <circle cx="620.872" cy="654.166" r="53.729" />
+                </svg>
               </div>
               <h1 className="text-lg font-bold">Qonvo</h1>
             </Link>
