@@ -33,7 +33,7 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
   {
-    email: { 
+    email: {
       type: String,
       required: [true, "Kindly provide email address"],
       unique: true,
@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
     fullName: {
       type: String,
       trim: true,
-      default: " ",
+      required: [true, "Kindly provide full name"],
     },
     password: {
       type: String,

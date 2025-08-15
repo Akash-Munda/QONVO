@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
-
+import avatar from "../../public/avatar.png";
 const BASE_URL =
   import.meta.env.MODE === "development" ? "http://localhost:5021" : "/";
 
@@ -50,13 +50,13 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const formData = new FormData();
-      formData.append("fullname", data.fullname);
+      formData.append("fullName", data.fullName);
       formData.append("email", data.email);
       formData.append("password", data.password);
 
       // If user selected an image
       if (data.profilePicFile) {
-        formData.append("profilePic", "/avatar.png"); // must match backend field name
+        formData.append("profilePic", URL.createObjectURL(avatar)); // must match backend field name
       }
 
       const res = await axiosInstance.post("/auth/signup", formData, {
@@ -67,8 +67,8 @@ export const useAuthStore = create((set, get) => ({
       toast.success("Account created successfully");
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed");
-      console.error(error.response?.data?.message);
+      toast.error("Signup failed", error);
+      console.error("Error while signup", error.message);
     } finally {
       set({ isSigningUp: false });
     }
