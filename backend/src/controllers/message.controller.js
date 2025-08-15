@@ -10,7 +10,9 @@ import { getReceiverSocketId, io } from "../lib/socket.js";
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
-    const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
+    const filteredUsers = await User.find({
+      _id: { $ne: loggedInUserId },
+    }).select("-password");
 
     res.status(200).json(filteredUsers);
   } catch (error) {
@@ -19,7 +21,7 @@ export const getUsersForSidebar = async (req, res) => {
   }
 };
 // This function retrieves messages between the logged-in user and another user
-// identified by the userToChatId parameter. It uses the Message model to find  
+// identified by the userToChatId parameter. It uses the Message model to find
 // messages where the logged-in user is either the sender or receiver.
 // The messages are returned in chronological order, and the function handles errors gracefully.
 
@@ -46,15 +48,16 @@ export const getMessages = async (req, res) => {
 
 export const sendMessage = async (req, res) => {
   try {
-    const { text, image } = req.body;
+    const { text } = req.body;
+    let url = req.file?.url || "";
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
     let imageUrl;
-    if (image) {
+    if (url) {
       // Upload base64 image to cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(image);
-      imageUrl = uploadResponse.secure_url;
+
+      imageUrl = url;
     }
 
     const newMessage = new Message({
@@ -67,12 +70,12 @@ export const sendMessage = async (req, res) => {
     await newMessage.save();
 
     // Notify the receiver via WebSocket if they are connected
-    // This assumes you have a function to get the receiver's socket ID 
+    // This assumes you have a function to get the receiver's socket ID
     // based on their user ID.
     // You might need to implement this function in your socket management logic.
     // Example: const receiverSocketId = getReceiverSocketId(receiverId);
     // If the receiver is connected, emit a 'newMessage' event to them.
-    // // This is a placeholder function; you need to implement it based on your socket management.    
+    // // This is a placeholder function; you need to implement it based on your socket management.
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);

@@ -18,8 +18,9 @@ export const useAuthStore = create((set, get) => ({
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
-
       set({ authUser: res.data });
+      console.log("auth check", res.data);
+
       get().connectSocket();
     } catch (error) {
       console.log("Error in checkAuth:", error);
@@ -29,15 +30,45 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  // signup: async (data) => {
+  //   set({ isSigningUp: true });
+  //   try {
+  //     const res = await axiosInstance.post("/auth/signup", data);
+  //     set({ authUser: res.data });
+  //     toast.success("Account created successfully");
+  //     get().connectSocket();
+  //   } catch (error) {
+  //     toast.error(error.response?.data?.message || "Signup failed");
+  //     console.error(error.response?.data?.message);
+  //   } finally {
+  //     set({ isSigningUp: false });
+  //   }
+  // },
+
   signup: async (data) => {
     set({ isSigningUp: true });
+
     try {
-      const res = await axiosInstance.post("/auth/signup", data);
+      const formData = new FormData();
+      formData.append("fullname", data.fullname);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+
+      // If user selected an image
+      if (data.profilePicFile) {
+        formData.append("profilePic", "/avatar.png"); // must match backend field name
+      }
+
+      const res = await axiosInstance.post("/auth/signup", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       set({ authUser: res.data });
       toast.success("Account created successfully");
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Signup failed");
+      console.error(error.response?.data?.message);
     } finally {
       set({ isSigningUp: false });
     }
@@ -52,7 +83,8 @@ export const useAuthStore = create((set, get) => ({
 
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.error(error.response?.data?.message);
+      toast.error(error.response?.data?.message || "Login failed");
     } finally {
       set({ isLoggingIn: false });
     }
@@ -65,19 +97,37 @@ export const useAuthStore = create((set, get) => ({
       toast.success("Logged out successfully");
       get().disconnectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Logout failed");
+      console.error(error.response?.data?.message);
     }
   },
 
-  updateProfile: async (data) => {
+  // updateProfile: async (data) => {
+  //   set({ isUpdatingProfile: true });
+  //   try {
+  //     const res = await axiosInstance.put("/auth/update-profile", data);
+  //     set({ authUser: res.data });
+  //     toast.success("Profile updated successfully");
+  //   } catch (error) {
+  //     console.log("error in update profile:", error);
+  //     toast.error(error.response.data.message);
+  //   } finally {
+  //     set({ isUpdatingProfile: false });
+  //   }
+  // },
+
+  updateProfile: async (formData) => {
     set({ isUpdatingProfile: true });
     try {
-      const res = await axiosInstance.put("/auth/update-profile", data);
+      const res = await axiosInstance.post("/auth/update-profile", formData, {
+        // const res = await axiosInstance.post("/auth/update-profile", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       set({ authUser: res.data });
       toast.success("Profile updated successfully");
     } catch (error) {
-      console.log("error in update profile:", error);
-      toast.error(error.response.data.message);
+      console.error("Error in update profile:", error);
+      toast.error(error.response?.data?.message || "Upload failed");
     } finally {
       set({ isUpdatingProfile: false });
     }
