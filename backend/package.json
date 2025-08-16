@@ -4,7 +4,6 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "npx nodemon src/index.js",
-    "backend": "npx nodemon src/index.js",
     "start": "node src/index.js"
   },
   "keywords": [],
