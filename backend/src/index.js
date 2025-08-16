@@ -93,7 +93,7 @@ app.use(express.static(path.join(__dirname, "../frontend/dist"))); // if Vite
 // app.use(express.static(path.join(__dirname, "../frontend/build"))); // if CRA
 
 // Catch-all to serve index.html for React Router
-app.get("/", (req, res) => {
+app.get("/*splat", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
 
@@ -106,7 +106,7 @@ app.get("/", (req, res) => {
 // });
 
 // ===== Root Route =====
-app.get("/", (req, res) => {
+app.get("/server", (req, res) => {
   res.status(200).json({ message: "Server fired up" });
 });
 app.get("/health", (req, res) => {
