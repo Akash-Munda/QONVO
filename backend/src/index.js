@@ -47,6 +47,7 @@ import { app, server } from "./lib/socket.js";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 
+
 dotenv.config();
 // const app = express();
 const PORT = process.env.PORT || 5000;
@@ -77,6 +78,15 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
+if(process.env.NODE_ENV === "production") {
+  // Serve static files from the React frontend app
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  // Handle React routing, return all requests to React app
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 // ===== Serve Frontend in Production =====
 app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
