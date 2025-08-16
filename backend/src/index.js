@@ -88,13 +88,22 @@ app.use("/api/messages", messageRoutes);
 //     );
 //   });
 // }
-// ===== Serve Frontend in Production =====
-app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
-// Catch-all for client-side routing
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+app.use(express.static(path.join(__dirname, "../frontend/dist"))); // if Vite
+// app.use(express.static(path.join(__dirname, "../frontend/build"))); // if CRA
+
+// Catch-all to serve index.html for React Router
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
+
+// ===== Serve Frontend in Production =====
+// app.use(express.static(path.join(__dirname, "frontend", "dist")));
+
+// // Catch-all for client-side routing
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+// });
 
 // ===== Root Route =====
 app.get("/", (req, res) => {
