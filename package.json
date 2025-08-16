@@ -1,5 +1,5 @@
 {
-  "name": "chatty",
+  "name": "Qonvo",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -7,19 +7,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "npm run dev --prefix frontend",
     "backend": "npm run backend --prefix backend",
-    "dev": "npx concurrently \"npm run frontend\" \"npm run backend\""
+    "dev": "npx concurrently \"npm run frontend\" \"npm run backend\"",
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nishuR31/Chatty.git"
+    "url": "git+https://github.com/Akash-Munda/Qonvo.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nishuR31/Chatty/issues"
+    "url": "https://github.com/Akash-Munda/Qonvo/issues"
   },
-  "homepage": "https://github.com/nishuR31/Chatty#readme",
+  "homepage": "https://github.com/Akash-Munda/Qonvo#readme",
   "description": "",
   "devDependencies": {
     "concurrently": "^9.2.0"

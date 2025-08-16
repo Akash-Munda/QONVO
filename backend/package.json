@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "npx nodemon src/index.js",
     "backend": "npx nodemon src/index.js",
-    "back": "node src/index.js"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0",
     "morgan": "^1.10.1",
+    "Qonvo": "file:..",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
